@@ -1,0 +1,86 @@
+/* src/styles/global.css */
+
+/* Utility Classes */
+.glass-card {
+    background: var(--color-bg-card);
+    backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+.premium-button {
+    background: linear-gradient(135deg, var(--color-accent), color-mix(in srgb, var(--color-accent), black 20%));
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-medium);
+    box-shadow: 0 4px 15px var(--color-accent-glow);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    text-decoration: none;
+}
+
+.premium-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--color-accent-glow);
+}
+
+.premium-button:active {
+    transform: translateY(0);
+}
+
+.premium-button.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.premium-button.secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Layout Utilities */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.page {
+    padding-top: var(--spacing-2xl);
+    padding-bottom: var(--spacing-2xl);
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.grid-catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* Typography Overrides */
+h1,
+h2,
+h3 {
+    margin-top: 0;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(to right, #fff, #ccc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

@@ -1,0 +1,56 @@
+/* src/styles/variables.css */
+:root {
+  /* HSL Colors */
+  --color-primary-hue: 250;
+  --color-primary-sat: 70%;
+  --color-primary-light: 60%;
+  
+  --color-background-hue: 240;
+  --color-background-sat: 20%;
+  --color-background-lum: 10%;
+
+  /* Premium Palette */
+  --color-bg-dark: hsl(var(--color-background-hue), var(--color-background-sat), var(--color-background-lum)); /* Very Dark Blue/Black */
+  --color-bg-card: hsla(240, 20%, 20%, 0.3); /* Glassy */
+  --color-text-main: hsl(0, 0%, 95%);
+  --color-text-muted: hsl(240, 10%, 70%);
+  --color-accent: hsl(var(--color-primary-hue), var(--color-primary-sat), var(--color-primary-light));
+  --color-accent-glow: hsla(var(--color-primary-hue), var(--color-primary-sat), var(--color-primary-light), 0.5);
+
+  /* Glassmorphism */
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-backdrop: blur(16px);
+  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+}
+
+body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-main);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  /* Premium subtle gradient background */
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(50, 50, 150, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(100, 50, 150, 0.2) 0%, transparent 40%);
+  min-height: 100vh;
+}
