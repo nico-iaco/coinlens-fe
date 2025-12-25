@@ -13,8 +13,9 @@ export default function Layout() {
                 backgroundColor: 'rgba(0,0,0,0.2)'
             }}>
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Link to="/" style={{ textDecoration: 'none', fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
-                        CoinLens
+                    <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', color: 'white' }}>
+                        <img src="/logo.svg" alt="CoinLens Logo" style={{ height: '40px', width: '40px', objectFit: 'contain' }} />
+                        <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>CoinLens</span>
                     </Link>
                     <nav>
                         {/* Future nav items */}

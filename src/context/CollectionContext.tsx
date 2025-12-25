@@ -6,11 +6,13 @@ export interface Coin extends ApiIdentificationResponse {
     // Aliases to handle possible mismatches during transition
     title: string;
     imageFront?: string;
+    imageBack?: string;
     dateAdded: number;
 }
 
 interface CollectionContextType {
     coins: Coin[];
+    loading: boolean;
     refreshCoins: () => void;
     addCoin: (coinData: unknown) => void; // Legacy support
 }
@@ -19,9 +21,11 @@ const CollectionContext = createContext<CollectionContextType | undefined>(undef
 
 export function CollectionProvider({ children }: { children: ReactNode }) {
     const [coins, setCoins] = useState<Coin[]>([]);
+    const [loading, setLoading] = useState(true);
     const [trigger, setTrigger] = useState(0);
 
     useEffect(() => {
+        setLoading(true);
         getCoins()
             .then(apiCoins => {
                 // Map API format to Internal format
@@ -29,11 +33,13 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
                     ...ac,
                     title: ac.name, // Mapping
                     imageFront: ac.image_front_url,
+                    imageBack: ac.image_back_url,
                     dateAdded: ac.created_at ? new Date(ac.created_at).getTime() : Date.now()
                 }));
                 setCoins(mapped);
             })
-            .catch(err => console.error("Failed to fetch coins", err));
+            .catch(err => console.error("Failed to fetch coins", err))
+            .finally(() => setLoading(false));
     }, [trigger]);
 
     const refreshCoins = () => setTrigger(t => t + 1);
@@ -47,7 +53,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <CollectionContext.Provider value={{ coins, refreshCoins, addCoin }}>
+        <CollectionContext.Provider value={{ coins, loading, refreshCoins, addCoin }}>
             {children}
         </CollectionContext.Provider>
     );

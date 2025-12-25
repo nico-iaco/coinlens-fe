@@ -28,9 +28,9 @@ export default function HomePage() {
                     {coins.map(coin => (
                         <Link to={`/coins/${coin.id}`} key={coin.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <div className="glass-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.2s' }}>
-                                {coin.imageFront && (
+                                {coin.imageBack && (
                                     <div style={{ height: '200px', overflow: 'hidden' }}>
-                                        <img src={coin.imageFront} alt={coin.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <img src={coin.imageBack} alt={coin.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     </div>
                                 )}
                                 <div style={{ padding: 'var(--spacing-md)' }}>

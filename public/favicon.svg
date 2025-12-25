@@ -1,0 +1,38 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Coin Body -->
+  <circle cx="256" cy="256" r="240" fill="url(#goldGradient)" stroke="#B8860B" stroke-width="10"/>
+  <circle cx="256" cy="256" r="210" stroke="#DAA520" stroke-width="5" fill="none"/>
+  
+  <!-- Coin Inner Texture (Subtle Ridges) -->
+  <circle cx="256" cy="256" r="200" fill="url(#innerGoldGradient)"/>
+
+  <!-- Lens Handle -->
+  <path d="M360 360 L440 440" stroke="#555" stroke-width="40" stroke-linecap="round"/>
+  
+  <!-- Lens Frame -->
+  <circle cx="256" cy="256" r="100" stroke="#C0C0C0" stroke-width="15" fill="none"/>
+  
+  <!-- Lens Glass -->
+  <circle cx="256" cy="256" r="92" fill="url(#glassGradient)"/>
+  
+  <!-- Reflections on Glass -->
+  <path d="M220 200 Q256 180 292 200" stroke="white" stroke-width="10" stroke-opacity="0.6" fill="none"/>
+  
+  <!-- Definitions -->
+  <defs>
+    <linearGradient id="goldGradient" x1="60" y1="60" x2="452" y2="452" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="50%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+    <radialGradient id="innerGoldGradient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(256 256) rotate(90) scale(200)">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="80%" stop-color="#DAA520"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </radialGradient>
+    <linearGradient id="glassGradient" x1="180" y1="180" x2="332" y2="332" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="white" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#87CEEB" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+</svg>

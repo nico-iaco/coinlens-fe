@@ -1,24 +1,14 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getCoinById, type ApiIdentificationResponse } from '../services/coinService';
+import { useCollection } from '../context/CollectionContext';
 
 export default function CoinDetailsPage() {
     const { id } = useParams<{ id: string }>();
-    const [coin, setCoin] = useState<ApiIdentificationResponse | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { coins, loading } = useCollection();
 
-    useEffect(() => {
-        if (id) {
-            getCoinById(id)
-                .then(setCoin)
-                .catch((err) => setError(err.message))
-                .finally(() => setLoading(false));
-        }
-    }, [id]);
+    // Find the coin directly from the loaded collection
+    const coin = coins.find(c => c.id === id);
 
     if (loading) return <div className="page container" style={{ textAlign: 'center' }}>Loading...</div>;
-    if (error) return <div className="page container" style={{ textAlign: 'center', color: 'red' }}>Error: {error}</div>;
     if (!coin) return <div className="page container" style={{ textAlign: 'center' }}>Coin not found</div>;
 
     return (
@@ -29,7 +19,7 @@ export default function CoinDetailsPage() {
 
             <div className="glass-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
                 <header style={{ textAlign: 'center', paddingBottom: 'var(--spacing-lg)', borderBottom: 'var(--glass-border)' }}>
-                    <h1 style={{ marginBottom: 'var(--spacing-sm)' }}>{coin.name}</h1>
+                    <h1 style={{ marginBottom: 'var(--spacing-sm)' }}>{coin.title}</h1>
                     <div style={{ color: 'var(--color-text-muted)' }}>{coin.country} • {coin.year}</div>
                 </header>
 
@@ -39,16 +29,16 @@ export default function CoinDetailsPage() {
                     gap: 'var(--spacing-lg)',
                     margin: 'var(--spacing-xl) 0'
                 }}>
-                    {coin.image_front_url && (
+                    {coin.imageFront && (
                         <div>
                             <div style={{ marginBottom: 'var(--spacing-sm)', color: 'var(--color-text-muted)', textAlign: 'center' }}>Front</div>
-                            <img src={coin.image_front_url} alt="Front" style={{ width: '100%', borderRadius: 'var(--radius-md)' }} />
+                            <img src={coin.imageFront} alt="Front" style={{ width: '100%', borderRadius: 'var(--radius-md)' }} />
                         </div>
                     )}
-                    {coin.image_back_url && (
+                    {coin.imageBack && (
                         <div>
                             <div style={{ marginBottom: 'var(--spacing-sm)', color: 'var(--color-text-muted)', textAlign: 'center' }}>Back</div>
-                            <img src={coin.image_back_url} alt="Back" style={{ width: '100%', borderRadius: 'var(--radius-md)' }} />
+                            <img src={coin.imageBack} alt="Back" style={{ width: '100%', borderRadius: 'var(--radius-md)' }} />
                         </div>
                     )}
                 </div>
