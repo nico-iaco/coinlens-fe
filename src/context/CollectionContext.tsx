@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { getCoins, type ApiIdentificationResponse } from '../services/coinService';
+import { getCoins, updateCoinName, type ApiIdentificationResponse } from '../services/coinService';
 
 // Map API response to our internal Coin type
 export interface Coin extends ApiIdentificationResponse {
@@ -15,6 +15,7 @@ interface CollectionContextType {
     loading: boolean;
     refreshCoins: () => void;
     addCoin: (coinData: unknown) => void; // Legacy support
+    updateCoin: (id: string, name: string) => Promise<void>;
 }
 
 const CollectionContext = createContext<CollectionContextType | undefined>(undefined);
@@ -52,8 +53,13 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
         refreshCoins();
     };
 
+    const updateCoin = async (id: string, name: string) => {
+        await updateCoinName(id, name);
+        refreshCoins();
+    };
+
     return (
-        <CollectionContext.Provider value={{ coins, loading, refreshCoins, addCoin }}>
+        <CollectionContext.Provider value={{ coins, loading, refreshCoins, addCoin, updateCoin }}>
             {children}
         </CollectionContext.Provider>
     );

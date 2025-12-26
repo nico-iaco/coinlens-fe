@@ -41,3 +41,19 @@ export async function identifyCoin(frontImage: File, backImage: File): Promise<A
 
     return response.json();
 }
+
+export async function updateCoinName(id: string, name: string): Promise<ApiIdentificationResponse> {
+    const response = await fetch(`/api/coins/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`API Update Error: ${response.status}`);
+    }
+
+    return response.json();
+}
