@@ -57,3 +57,13 @@ export async function updateCoinName(id: string, name: string): Promise<ApiIdent
 
     return response.json();
 }
+
+export async function deleteCoin(id: string): Promise<void> {
+    const response = await fetch(`/api/coins/${id}`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error(`API Delete Error: ${response.status}`);
+    }
+}
