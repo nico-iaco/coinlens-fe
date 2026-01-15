@@ -5,7 +5,7 @@ import CoinDetails from '../components/CoinDetails';
 import { useCollection } from '../context/CollectionContext';
 import { useNavigate } from 'react-router-dom';
 
-import { identifyCoin, type ApiIdentificationResponse } from '../services/coinService';
+import { identifyCoin, addCoinManual, type ApiIdentificationResponse } from '../services/coinService';
 
 // Adapter type for the view
 interface IdentificationResult extends ApiIdentificationResponse {
@@ -23,7 +23,15 @@ export default function UploadPage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
 
     const [result, setResult] = useState<IdentificationResult | null>(null);
-    const { addCoin } = useCollection();
+    const [showManualEntry, setShowManualEntry] = useState(false);
+    const [manualForm, setManualForm] = useState({
+        name: '',
+        description: '',
+        year: '',
+        country: ''
+    });
+
+    const { addCoin, refreshCoins } = useCollection();
     const navigate = useNavigate();
 
     const handleImageSelect = (side: 'front' | 'back') => (file: File) => {
@@ -56,7 +64,9 @@ export default function UploadPage() {
             });
         } catch (error) {
             console.error("Identification failed", error);
-            alert("Identification failed. Please try again.");
+            if (confirm("Identification failed. Would you like to add the coin manually?")) {
+                setShowManualEntry(true);
+            }
         } finally {
             setIsAnalyzing(false);
         }
@@ -77,10 +87,135 @@ export default function UploadPage() {
         }
     };
 
+    const handleManualSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!frontImage || !backImage) return;
+
+        try {
+            await addCoinManual({
+                ...manualForm,
+                front_image: frontImage,
+                back_image: backImage
+            });
+            refreshCoins();
+            navigate('/');
+        } catch (error) {
+            console.error("Manual add failed", error);
+            alert("Failed to add coin manually.");
+        }
+    };
+
     if (isAnalyzing) {
         return (
             <div className="page container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <CoinIdentification />
+            </div>
+        );
+    }
+
+    if (showManualEntry) {
+        return (
+            <div className="page container">
+                <div className="glass-card" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: 'var(--spacing-lg)' }}>Manual Entry</h2>
+                    <form onSubmit={handleManualSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
+                        <div style={{ display: 'flex', gap: 'var(--spacing-md)', justifyContent: 'center', marginBottom: 'var(--spacing-md)' }}>
+                            {frontPreview && <img src={frontPreview} alt="Front" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} />}
+                            {backPreview && <img src={backPreview} alt="Back" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} />}
+                        </div>
+
+                        <div>
+                            <label style={{ display: 'block', marginBottom: 'var(--spacing-xs)', color: 'var(--color-text-muted)' }}>Name</label>
+                            <input
+                                type="text"
+                                required
+                                value={manualForm.name}
+                                onChange={e => setManualForm(prev => ({ ...prev, name: e.target.value }))}
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    border: '1px solid var(--glass-border)',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    color: 'white'
+                                }}
+                            />
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-md)' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: 'var(--spacing-xs)', color: 'var(--color-text-muted)' }}>Year</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={manualForm.year}
+                                    onChange={e => setManualForm(prev => ({ ...prev, year: e.target.value }))}
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px',
+                                        borderRadius: '8px',
+                                        border: '1px solid var(--glass-border)',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        color: 'white'
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: 'var(--spacing-xs)', color: 'var(--color-text-muted)' }}>Country</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={manualForm.country}
+                                    onChange={e => setManualForm(prev => ({ ...prev, country: e.target.value }))}
+                                    style={{
+                                        width: '100%',
+                                        padding: '12px',
+                                        borderRadius: '8px',
+                                        border: '1px solid var(--glass-border)',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        color: 'white'
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style={{ display: 'block', marginBottom: 'var(--spacing-xs)', color: 'var(--color-text-muted)' }}>Description</label>
+                            <textarea
+                                value={manualForm.description}
+                                onChange={e => setManualForm(prev => ({ ...prev, description: e.target.value }))}
+                                rows={4}
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    border: '1px solid var(--glass-border)',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    color: 'white',
+                                    resize: 'vertical'
+                                }}
+                            />
+                        </div>
+
+                        <div style={{ display: 'flex', gap: 'var(--spacing-md)', marginTop: 'var(--spacing-lg)' }}>
+                            <button
+                                type="button"
+                                className="premium-button secondary"
+                                onClick={() => setShowManualEntry(false)}
+                                style={{ flex: 1 }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="premium-button"
+                                style={{ flex: 1 }}
+                            >
+                                Add manual
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         );
     }
