@@ -17,8 +17,9 @@ export default function Layout() {
                         <img src="/logo.svg" alt="CoinLens Logo" style={{ height: '40px', width: '40px', objectFit: 'contain' }} />
                         <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>CoinLens</span>
                     </Link>
-                    <nav>
-                        {/* Future nav items */}
+                    <nav style={{ display: 'flex', gap: 'var(--spacing-lg)' }}>
+                        <Link to="/search" style={{ color: 'white', textDecoration: 'none', fontWeight: '500' }}>Search</Link>
+                        <Link to="/add" style={{ color: 'white', textDecoration: 'none', fontWeight: '500' }}>Add Coin</Link>
                     </nav>
                 </div>
             </header>

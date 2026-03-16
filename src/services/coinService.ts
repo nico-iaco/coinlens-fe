@@ -4,9 +4,20 @@ export interface ApiIdentificationResponse {
     description: string;
     year: string;
     country: string;
+    universal_id?: string;
     image_front_url?: string;
     image_back_url?: string;
     created_at?: string;
+}
+
+export interface ApiSearchResponse {
+    ai_analysis: {
+        name: string;
+        country: string;
+        year: string;
+        universal_id: string;
+    };
+    db_matches: ApiIdentificationResponse[];
 }
 
 export async function getCoins(): Promise<ApiIdentificationResponse[]> {
@@ -73,6 +84,7 @@ export async function addCoinManual(data: {
     description: string;
     year: string;
     country: string;
+    universal_id?: string;
     front_image: File;
     back_image: File;
 }): Promise<ApiIdentificationResponse> {
@@ -81,6 +93,7 @@ export async function addCoinManual(data: {
     formData.append('description', data.description);
     formData.append('year', data.year);
     formData.append('country', data.country);
+    if (data.universal_id) formData.append('universal_id', data.universal_id);
     formData.append('front_image', data.front_image);
     formData.append('back_image', data.back_image);
 
@@ -103,6 +116,22 @@ export async function reidentifyCoin(id: string): Promise<ApiIdentificationRespo
 
     if (!response.ok) {
         throw new Error(`API Re-identify Error: ${response.status}`);
+    }
+
+    return response.json();
+}
+
+export async function searchCoin(reverseImage: File): Promise<ApiSearchResponse> {
+    const formData = new FormData();
+    formData.append('reverse_image', reverseImage);
+
+    const response = await fetch('/api/coins/search', {
+        method: 'POST',
+        body: formData,
+    });
+
+    if (!response.ok) {
+        throw new Error(`API Search Error: ${response.status} ${response.statusText}`);
     }
 
     return response.json();

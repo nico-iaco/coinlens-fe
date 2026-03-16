@@ -3,7 +3,8 @@ import ImageUploadArea from '../components/ImageUploadArea';
 import CoinIdentification from '../components/CoinIdentification';
 import CoinDetails from '../components/CoinDetails';
 import { useCollection } from '../context/CollectionContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import { identifyCoin, addCoinManual, type ApiIdentificationResponse } from '../services/coinService';
 
@@ -28,11 +29,30 @@ export default function UploadPage() {
         name: '',
         description: '',
         year: '',
-        country: ''
+        country: '',
+        universal_id: ''
     });
 
     const { addCoin, refreshCoins } = useCollection();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Handle pre-fill data from search
+    useEffect(() => {
+        const prefill = location.state?.prefill;
+        if (prefill) {
+            setManualForm({
+                name: prefill.name || '',
+                description: prefill.description || '',
+                year: prefill.year || '',
+                country: prefill.country || '',
+                universal_id: prefill.universal_id || ''
+            });
+            if (prefill.imageBackPreview) setBackPreview(prefill.imageBackPreview);
+            if (prefill.imageBackFile) setBackImage(prefill.imageBackFile);
+            setShowManualEntry(true);
+        }
+    }, [location.state]);
 
     const handleImageSelect = (side: 'front' | 'back') => (file: File) => {
         const reader = new FileReader();
@@ -177,6 +197,24 @@ export default function UploadPage() {
                                     }}
                                 />
                             </div>
+                        </div>
+
+                        <div>
+                            <label style={{ display: 'block', marginBottom: 'var(--spacing-xs)', color: 'var(--color-text-muted)' }}>Universal ID</label>
+                            <input
+                                type="text"
+                                value={manualForm.universal_id}
+                                onChange={e => setManualForm(prev => ({ ...prev, universal_id: e.target.value }))}
+                                placeholder="e.g. KM# 123"
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    border: '1px solid var(--glass-border)',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    color: 'white'
+                                }}
+                            />
                         </div>
 
                         <div>

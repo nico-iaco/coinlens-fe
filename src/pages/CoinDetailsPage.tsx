@@ -157,7 +157,14 @@ export default function CoinDetailsPage() {
                             </button>
                         </div>
                     )}
-                    <div style={{ color: 'var(--color-text-muted)' }}>{coin.country} • {coin.year}</div>
+                    <div style={{ color: 'var(--color-text-muted)' }}>
+                        {coin.country} • {coin.year}
+                        {coin.universal_id && (
+                            <div style={{ marginTop: '8px', fontSize: '0.9rem', background: 'rgba(255,255,255,0.05)', display: 'inline-block', padding: '4px 12px', borderRadius: '20px', border: '1px solid var(--glass-border)' }}>
+                                ID Universale: <span style={{ color: 'var(--color-accent)' }}>{coin.universal_id}</span>
+                            </div>
+                        )}
+                    </div>
                 </header>
 
                 <div style={{

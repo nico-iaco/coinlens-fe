@@ -8,13 +8,14 @@ export interface Coin extends ApiIdentificationResponse {
     imageFront?: string;
     imageBack?: string;
     dateAdded: number;
+    universal_id?: string;
 }
 
 interface CollectionContextType {
     coins: Coin[];
     loading: boolean;
     refreshCoins: () => void;
-    addCoin: (coinData: unknown) => void; // Legacy support
+    addCoin: (coinData: any) => void; // Legacy support
     updateCoin: (id: string, name: string) => Promise<void>;
     deleteCoin: (id: string) => Promise<void>;
 }
@@ -36,7 +37,8 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
                     title: ac.name, // Mapping
                     imageFront: ac.image_front_url,
                     imageBack: ac.image_back_url,
-                    dateAdded: ac.created_at ? new Date(ac.created_at).getTime() : Date.now()
+                    dateAdded: ac.created_at ? new Date(ac.created_at).getTime() : Date.now(),
+                    universal_id: ac.universal_id
                 }));
                 setCoins(mapped);
             })
