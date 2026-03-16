@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import ImageUploadArea from '../components/ImageUploadArea';
-import { searchCoin, type ApiSearchResponse, type ApiIdentificationResponse } from '../services/coinService';
-import { useCollection } from '../context/CollectionContext';
+import { searchCoin, type ApiSearchResponse } from '../services/coinService';
 
 export default function SearchPage() {
     const [image, setImage] = useState<File | null>(null);
@@ -11,7 +10,6 @@ export default function SearchPage() {
     const [searchResult, setSearchResult] = useState<ApiSearchResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const { coins } = useCollection();
     const navigate = useNavigate();
 
     const handleImageSelect = (file: File) => {
