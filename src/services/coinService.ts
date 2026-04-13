@@ -89,7 +89,7 @@ export async function identifyCoin(
                         // Assuming completion if final fields are present
                         finalResult = data;
                     }
-                } catch (e) {
+                } catch {
                     if (onProgress) {
                         onProgress(dataString);
                     }

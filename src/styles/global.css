@@ -84,3 +84,66 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.filter-bar {
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+.filter-bar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-md);
+}
+
+.filter-field {
+    display: grid;
+    gap: var(--spacing-xs);
+}
+
+.filter-field span {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-text-main);
+    padding: 10px 12px;
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    border-color: color-mix(in srgb, var(--color-accent), white 25%);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-glow), transparent 45%);
+}
+
+.filter-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 860px) {
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-bar-header,
+    .filter-actions {
+        justify-content: flex-start;
+    }
+}

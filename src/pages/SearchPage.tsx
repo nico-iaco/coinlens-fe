@@ -27,6 +27,7 @@ export default function SearchPage() {
         setError(null);
         try {
             const result = await searchCoin(image);
+            console.log("Search result received:", result);
             setSearchResult(result);
         } catch (err) {
             console.error("Search failed", err);
@@ -43,10 +44,10 @@ export default function SearchPage() {
         navigate('/add', { 
             state: { 
                 prefill: {
-                    name: ai_analysis.name,
-                    country: ai_analysis.country,
-                    year: ai_analysis.year,
-                    universal_id: ai_analysis.universal_id,
+                    name: ai_analysis?.name,
+                    country: ai_analysis?.country,
+                    year: ai_analysis?.year,
+                    universal_id: ai_analysis?.universal_id,
                     imageBackPreview: preview,
                     imageBackFile: image
                 }
@@ -101,10 +102,10 @@ export default function SearchPage() {
                                 Identification Result
                             </h2>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <div><strong>Name:</strong> {searchResult.ai_analysis.name}</div>
-                                <div><strong>Country:</strong> {searchResult.ai_analysis.country}</div>
-                                <div><strong>Year:</strong> {searchResult.ai_analysis.year}</div>
-                                <div><strong>Universal ID:</strong> <span style={{ color: 'var(--color-accent)' }}>{searchResult.ai_analysis.universal_id}</span></div>
+                                <div><strong>Name:</strong> {searchResult.ai_analysis?.name || 'N/A'}</div>
+                                <div><strong>Country:</strong> {searchResult.ai_analysis?.country || 'N/A'}</div>
+                                <div><strong>Year:</strong> {searchResult.ai_analysis?.year || 'N/A'}</div>
+                                <div><strong>Universal ID:</strong> <span style={{ color: 'var(--color-accent)' }}>{searchResult.ai_analysis?.universal_id || 'N/A'}</span></div>
                             </div>
 
                             <button 
@@ -121,7 +122,7 @@ export default function SearchPage() {
                             <h2 style={{ fontSize: '1.2rem', marginBottom: 'var(--spacing-md)', borderBottom: '1px solid var(--glass-border)', paddingBottom: '8px' }}>
                                 In Your Collection
                             </h2>
-                            {searchResult.db_matches.length > 0 ? (
+                            {searchResult.db_matches && searchResult.db_matches.length > 0 ? (
                                 <div>
                                     <p style={{ color: 'var(--color-accent)', marginBottom: 'var(--spacing-sm)' }}>
                                         You already have this coin in your collection!

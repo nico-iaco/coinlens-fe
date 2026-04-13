@@ -1,8 +1,37 @@
 import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
 import { useCollection } from '../context/CollectionContext';
+import FilterBar from '../components/FilterBar';
 
 export default function HomePage() {
-    const { coins } = useCollection();
+    const {
+        coins,
+        filteredCoins,
+        filters,
+        hasActiveFilters,
+        setFilter,
+        clearFilters
+    } = useCollection();
+
+    const countries = useMemo(() => {
+        const values = new Set(
+            coins
+                .map((coin) => coin.country?.trim())
+                .filter((country): country is string => Boolean(country))
+        );
+
+        return [...values].sort((a, b) => a.localeCompare(b));
+    }, [coins]);
+
+    const years = useMemo(() => {
+        const values = new Set(
+            coins
+                .map((coin) => coin.year?.trim())
+                .filter((year): year is string => Boolean(year))
+        );
+
+        return [...values].sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+    }, [coins]);
 
     return (
         <div className="page container">
@@ -17,15 +46,37 @@ export default function HomePage() {
                 </Link>
             </section>
 
+            {coins.length > 0 && (
+                <div style={{ marginBottom: 'var(--spacing-xl)' }}>
+                    <FilterBar
+                        filters={filters}
+                        countries={countries}
+                        years={years}
+                        hasActiveFilters={hasActiveFilters}
+                        resultCount={filteredCoins.length}
+                        onFilterChange={setFilter}
+                        onClear={clearFilters}
+                    />
+                </div>
+            )}
+
             {coins.length === 0 ? (
                 <div className="glass-card" style={{ textAlign: 'center', padding: 'var(--spacing-2xl)' }}>
                     <div style={{ fontSize: '3rem', marginBottom: 'var(--spacing-md)', opacity: 0.5 }}>🪙</div>
                     <h3>No coins yet</h3>
                     <p style={{ color: 'var(--color-text-muted)' }}>Start building your digital catalog today.</p>
                 </div>
+            ) : filteredCoins.length === 0 ? (
+                <div className="glass-card" style={{ textAlign: 'center', padding: 'var(--spacing-2xl)' }}>
+                    <h3>No matching coins</h3>
+                    <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--spacing-lg)' }}>
+                        Try changing your filters to find the right coin faster.
+                    </p>
+                    <button className="premium-button secondary" onClick={clearFilters}>Clear filters</button>
+                </div>
             ) : (
                 <div className="grid-catalog">
-                    {coins.map(coin => (
+                    {filteredCoins.map(coin => (
                         <Link to={`/coins/${coin.id}`} key={coin.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <div className="glass-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.2s' }}>
                                 {coin.imageBack && (
