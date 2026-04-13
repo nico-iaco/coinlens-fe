@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 
-export default function CoinIdentification() {
+interface CoinIdentificationProps {
+    status?: string;
+}
+
+export default function CoinIdentification({ status = "Analyzing intricate details..." }: CoinIdentificationProps) {
     const [dots, setDots] = useState('');
 
     useEffect(() => {
@@ -38,7 +42,7 @@ export default function CoinIdentification() {
         }
       `}</style>
             <h2>Identifying Coin{dots}</h2>
-            <p style={{ color: 'var(--color-text-muted)' }}>Analyzing intricate details...</p>
+            <p style={{ color: 'var(--color-text-muted)' }}>{status}</p>
         </div>
     );
 }

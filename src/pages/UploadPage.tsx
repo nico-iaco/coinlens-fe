@@ -22,6 +22,7 @@ export default function UploadPage() {
     const [frontPreview, setFrontPreview] = useState<string>();
     const [backPreview, setBackPreview] = useState<string>();
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [analyzeStatus, setAnalyzeStatus] = useState("Analyzing intricate details...");
 
     const [result, setResult] = useState<IdentificationResult | null>(null);
     const [showManualEntry, setShowManualEntry] = useState(false);
@@ -72,9 +73,12 @@ export default function UploadPage() {
     const handleAnalyze = async () => {
         if (!frontImage || !backImage) return;
         setIsAnalyzing(true);
+        setAnalyzeStatus("Uploading images...");
 
         try {
-            const data = await identifyCoin(frontImage, backImage);
+            const data = await identifyCoin(frontImage, backImage, (msg) => {
+                setAnalyzeStatus(msg);
+            });
             setResult({
                 ...data,
                 title: data.name, // Map API 'name' to UI 'title'
@@ -128,7 +132,7 @@ export default function UploadPage() {
     if (isAnalyzing) {
         return (
             <div className="page container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <CoinIdentification />
+                <CoinIdentification status={analyzeStatus} />
             </div>
         );
     }
